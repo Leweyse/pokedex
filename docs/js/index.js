@@ -14,6 +14,20 @@ const getData = async (url) => {
     }
 }
 
+const getEvolutionData = async (idArr) => {
+    let evolutions = [];
+    idArr.forEach(id => evolutions.push(fetch(`https://pokeapi.co/api/v2/pokemon/${id}/`).then((response) => response.json())));
+
+    try {
+        let data = await Promise.all(evolutions);
+
+        return data;
+
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 const listIndex = (obj) => {
     let indexArr = [];
     let uniq = [];
@@ -66,19 +80,20 @@ input.addEventListener('keydown', function (event) {
     if (event.keyCode == 13) btn.click();
 })
 
-function findEv (obj) {
+const getEvolutionId = (obj) => {
+    let names = [];
     let newObj = obj.chain;
-    console.log(newObj.species.name);
+    names.push(newObj.species.name);
 
-    
-    newObj.evolves_to.map(evolution => {
-        console.log(evolution.species.name);
+    while (newObj.hasOwnProperty('evolves_to') && newObj.evolves_to.length > 0) {
+        newObj.evolves_to.map(evolution => {
+            names.push(evolution.species.name);
+        })
 
-        while (newObj.hasOwnProperty('evolves_to') && newObj.evolves_to.length > 0) {
-            newObj = newObj.evolves_to[0];
-            console.log(newObj.species.name);
-        }
-    })
+        newObj = newObj.evolves_to[0];
+    }
+
+    return names;
 }
 
 btn.addEventListener('click', async () => {
@@ -91,9 +106,10 @@ btn.addEventListener('click', async () => {
     let specieData = await getData(specie);
     let evolutionData = await getData(specieData.evolution_chain.url);
 
+    let evolutionInfo = await getEvolutionData(getEvolutionId(evolutionData));
+
+    console.log(evolutionInfo);
+
     removeContent(leftSection);
     createContentLeft(pokemonData);
-
-    console.log(evolutionData);
-    findEv(evolutionData);
 })
