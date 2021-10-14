@@ -1,5 +1,5 @@
-## Welcome to my Pokedex - [Github Pages][webpage] 👋
+### Welcome to my Pokedex - [Github Pages][webpage] 👋
 
-### PokeAPI
+## PokeAPI
 
 [webpage]: https://leweyse.github.io/pokedex/
