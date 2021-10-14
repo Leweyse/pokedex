@@ -1,6 +1,168 @@
 const btn = document.getElementById('run');
 const input = document.getElementById('pokemon');
+const main = document.querySelector('main');
 const leftSection = document.querySelector('.left');
+const rightBottomSection = document.querySelector('.bottom_right');
+
+// const fakeEevee = 
+// {
+//     "baby_trigger_item": null,
+//     "chain": {
+//       "evolves_to": [
+//         {
+//           "evolves_to": [
+//             {
+//                 "evolves_to": [
+//                     {
+//                         "evolves_to": [
+//                             {
+//                                 "evolves_to": [],
+//                                 "is_baby": false,
+//                                 "species": {
+//                                   "name": "Ohhh",
+//                                   "url": "https://pokeapi.co/api/v2/pokemon-species/134/"
+//                                 }
+//                               },
+//                         ],
+//                         "is_baby": false,
+//                         "species": {
+//                           "name": "anotherThing",
+//                           "url": "https://pokeapi.co/api/v2/pokemon-species/134/"
+//                         }
+//                       },
+//                 ],
+//                 "is_baby": false,
+//                 "species": {
+//                   "name": "somethingElse",
+//                   "url": "https://pokeapi.co/api/v2/pokemon-species/134/"
+//                 }
+//               },
+//           ],
+//           "is_baby": false,
+//           "species": {
+//             "name": "vaporeon",
+//             "url": "https://pokeapi.co/api/v2/pokemon-species/134/"
+//           }
+//         },
+//         {
+//           "evolves_to": [
+//             {
+//                 "evolves_to": [],
+//                 "is_baby": false,
+//                 "species": {
+//                   "name": "Ahhh",
+//                   "url": "https://pokeapi.co/api/v2/pokemon-species/134/"
+//                 }
+//               },
+//           ],
+//           "is_baby": false,
+//           "species": {
+//             "name": "jolteon",
+//             "url": "https://pokeapi.co/api/v2/pokemon-species/135/"
+//           }
+//         },
+//         {
+//           "evolves_to": [
+//             {
+//                 "evolves_to": [
+//                     {
+//                         "evolves_to": [],
+//                         "is_baby": false,
+//                         "species": {
+//                           "name": "Thhh",
+//                           "url": "https://pokeapi.co/api/v2/pokemon-species/134/"
+//                         }
+//                     },
+//                 ],
+//                 "is_baby": false,
+//                 "species": {
+//                   "name": "yhhh",
+//                   "url": "https://pokeapi.co/api/v2/pokemon-species/134/"
+//                 }
+//               },
+//           ],
+//           "is_baby": false,
+//           "species": {
+//             "name": "flareon",
+//             "url": "https://pokeapi.co/api/v2/pokemon-species/136/"
+//           }
+//         },
+//         {
+//           "evolves_to": [],
+//           "is_baby": false,
+//           "species": {
+//             "name": "espeon",
+//             "url": "https://pokeapi.co/api/v2/pokemon-species/196/"
+//           }
+//         },
+//         {
+//           "evolves_to": [
+//             {
+//                 "evolves_to": [
+//                     {
+//                         "evolves_to": [
+//                             {
+//                                 "evolves_to": [],
+//                                 "is_baby": false,
+//                                 "species": {
+//                                   "name": "EEEEEEEEE",
+//                                   "url": "https://pokeapi.co/api/v2/pokemon-species/134/"
+//                                 }
+//                             },
+//                         ],
+//                         "is_baby": false,
+//                         "species": {
+//                           "name": "AAAAAAAA",
+//                           "url": "https://pokeapi.co/api/v2/pokemon-species/134/"
+//                         }
+//                     },
+//                 ],
+//                 "is_baby": false,
+//                 "species": {
+//                   "name": "Uabsdkjfabhsd",
+//                   "url": "https://pokeapi.co/api/v2/pokemon-species/134/"
+//                 }
+//             },
+//           ],
+//           "is_baby": false,
+//           "species": {
+//             "name": "umbreon",
+//             "url": "https://pokeapi.co/api/v2/pokemon-species/197/"
+//           }
+//         },
+//         {
+//           "evolves_to": [],
+//           "is_baby": false,
+//           "species": {
+//             "name": "leafeon",
+//             "url": "https://pokeapi.co/api/v2/pokemon-species/470/"
+//           }
+//         },
+//         {
+//           "evolves_to": [],
+//           "is_baby": false,
+//           "species": {
+//             "name": "glaceon",
+//             "url": "https://pokeapi.co/api/v2/pokemon-species/471/"
+//           }
+//         },
+//         {
+//           "evolves_to": [],
+//           "is_baby": false,
+//           "species": {
+//             "name": "sylveon",
+//             "url": "https://pokeapi.co/api/v2/pokemon-species/700/"
+//           }
+//         }
+//       ],
+//       "is_baby": false,
+//       "species": {
+//         "name": "eevee",
+//         "url": "https://pokeapi.co/api/v2/pokemon-species/133/"
+//       }
+//     },
+//     "id": 67
+// }
 
 const getData = async (url) => {
     try {
@@ -10,7 +172,23 @@ const getData = async (url) => {
         return data;
 
     } catch (err) {
-        console.log(err);
+        createError();
+        setTimeout(() => {
+            main.removeChild(document.querySelector('.error_container'));
+        }, 3500);
+    }
+}
+
+const getSpeciesData = async (nameArr) => {
+    let names = [];
+    nameArr.forEach(name => names.push(fetch(`https://pokeapi.co/api/v2/pokemon-species/${name}/`).then((response) => response.json())));
+
+    try {
+        let data = await Promise.all(names);
+        return data;
+        
+    } catch (error) {
+        console.log('Missed pokemon');
     }
 }
 
@@ -20,11 +198,10 @@ const getEvolutionData = async (idArr) => {
 
     try {
         let data = await Promise.all(evolutions);
-
         return data;
 
     } catch (err) {
-        console.log(err);
+        console.log('Missed pokemon');
     }
 }
 
@@ -51,13 +228,20 @@ const listIndex = (obj) => {
 }
 
 const createContentLeft = (obj) => {
+    let divTag = document.createElement('div');
+    let secondDivTag = document.createElement('div');
     let h1Tag = document.createElement('h1');
     let h3Tag = document.createElement('h3');
     let imgTag = document.createElement('img');
 
-    leftSection.appendChild(h1Tag);
-    leftSection.appendChild(h3Tag);
-    leftSection.appendChild(imgTag);
+    divTag.classList.add('top_left');
+    secondDivTag.classList.add('bottom_left');
+
+    leftSection.appendChild(divTag);
+    leftSection.appendChild(secondDivTag);
+    divTag.appendChild(h1Tag);
+    divTag.appendChild(h3Tag);
+    divTag.appendChild(imgTag);
 
     h1Tag.innerHTML = obj.name;
     h3Tag.innerHTML = obj.id;
@@ -66,9 +250,21 @@ const createContentLeft = (obj) => {
     let moveIndex = listIndex(obj);
 
     for (let j = 0; j < moveIndex.length; j++) {
+        let divTag = document.createElement('div');
         let pTag = document.createElement('p');
-        leftSection.appendChild(pTag);
+    
+        divTag.appendChild(pTag);
+        secondDivTag.appendChild(divTag);
         pTag.innerHTML = obj.moves[moveIndex[j]].move.name;
+    }
+
+    let columns = secondDivTag.childNodes.length;
+
+    if (columns < 4) {
+        secondDivTag.style.setProperty('--columns-l', columns);
+    } else {
+        secondDivTag.style.setProperty('--columns-l', columns / 2);
+        secondDivTag.style.setProperty('--rows-l', columns / 2);
     }
 }
 
@@ -76,40 +272,107 @@ const removeContent = (parent) => {
     parent.innerHTML = '';
 }
 
-input.addEventListener('keydown', function (event) {
-    if (event.keyCode == 13) btn.click();
-})
-
-const getEvolutionId = (obj) => {
+const getEvolutionName = (obj) => {
     let names = [];
     let newObj = obj.chain;
+    let prevObj = obj.chain;
     names.push(newObj.species.name);
 
-    while (newObj.hasOwnProperty('evolves_to') && newObj.evolves_to.length > 0) {
-        newObj.evolves_to.map(evolution => {
-            names.push(evolution.species.name);
-        })
+    prevObj.evolves_to.map((evol, idx) => {
+        while (newObj.hasOwnProperty('evolves_to') && newObj.evolves_to.length > 0) {
+            newObj.evolves_to.map(evolution => {
+                names.push(evolution.species.name);
+            })
+    
+            newObj = newObj.evolves_to[0];
+        }
 
-        newObj = newObj.evolves_to[0];
-    }
+        newObj = prevObj.evolves_to[idx + 1];
+    })
 
     return names;
 }
 
+const getSpecieId = (nameArr) => {
+    let ids = [];
+    nameArr.forEach(obj => ids.push(obj.id));
+
+    return ids;
+}
+
+const createEvolutionSection = (arr) => {
+    arr.forEach(obj => {
+        let divTag = document.createElement('div');
+        let h1Tag = document.createElement('h1');
+        let h3Tag = document.createElement('h3');
+        let imgTag = document.createElement('img');
+
+        let columns = arr.length;
+
+        if (arr.length > 3) {
+            columns = Math.ceil(arr.length / 2);
+        }
+
+        rightBottomSection.style.setProperty('--columns', columns);
+
+        rightBottomSection.appendChild(divTag);
+        divTag.appendChild(h1Tag);
+        divTag.appendChild(h3Tag);
+        divTag.appendChild(imgTag);
+
+        h1Tag.innerHTML = obj.name;
+        h3Tag.innerHTML = obj.id;
+        imgTag.setAttribute('src', obj.sprites.front_default);
+    })
+}
+
+const createError = () => {
+    let divTag = document.createElement('div')
+    let h1Tag = document.createElement('h1');
+    let h3Tag = document.createElement('h3');
+    let h4Tag = document.createElement('h4');
+
+    divTag.classList.add('error_container');
+
+    main.appendChild(divTag);
+    divTag.appendChild(h1Tag);
+    divTag.appendChild(h3Tag);
+    divTag.appendChild(h4Tag);
+
+    h1Tag.innerHTML = 'This pokemon is still a mystery';
+    h4Tag.innerHTML = 'Try finding another pokemon';
+}
+
+input.addEventListener('keydown', function (event) {
+    if (event.keyCode == 13) btn.click();
+})
+
 btn.addEventListener('click', async () => {
-    let id = input.value.toLowerCase();
+    let inputValue = input.value.toLowerCase();    
+    let inputChecked = inputValue
+        .trim()
+        .replace(/[&\/\\#,+()$~%-.'":*?<>{}]/g, '')
+        .replace(/ {2,}/g, ' ')
+        .split(/[^a-zA-Z0-9]/g);
+    
+    let id = inputChecked.join('-');
 
     let pokemon = `https://pokeapi.co/api/v2/pokemon/${id}/`;
-    let specie = `https://pokeapi.co/api/v2/pokemon-species/${id}/`;
-    
     let pokemonData = await getData(pokemon);
+
+    let specieId = pokemonData.species.name;
+    let specie = `https://pokeapi.co/api/v2/pokemon-species/${specieId}/`;
     let specieData = await getData(specie);
-    let evolutionData = await getData(specieData.evolution_chain.url);
 
-    let evolutionInfo = await getEvolutionData(getEvolutionId(evolutionData));
+    let evolutionUrl = await getData(specieData.evolution_chain.url);
 
-    console.log(evolutionInfo);
+    let speciesData = await getSpeciesData(getEvolutionName(evolutionUrl))
+    let evolutionsData = await getEvolutionData(getSpecieId(speciesData));
+
+    // console.log(getEvolutionName(fakeEevee));
 
     removeContent(leftSection);
+    removeContent(rightBottomSection);
     createContentLeft(pokemonData);
+    createEvolutionSection(evolutionsData);
 })
