@@ -75,7 +75,7 @@ main {
     place-items: center;
 
     grid-template-columns: 1fr;
-    grid-template-rows: 0.2fr 1fr 1fr;
+    grid-template-rows: repeat(2, 1fr);
 
     background: var(--clr-bg-left);
 }
