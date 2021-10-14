@@ -180,7 +180,7 @@ const createError = () => {
     divTag.appendChild(h4Tag);
 
     h1Tag.innerHTML = 'This pokemon is still a mystery';
-    h4Tag.innerHTML = 'Try finding another pokemon';
+    h4Tag.innerHTML = 'Try to find another pokemon';
 }
 
 input.addEventListener('keydown', function (event) {
