@@ -1,13 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+:root {
+    --clr-bg-left: #FF784F;
+    --clr-bg-top-right: #3A3042;
+    --clr-bg-bottom-right: #DB9D47;
+
+    /* #FFE19C
+    #EDFFD9 */
+
+    --clr-text: #f7fcf1;
+
+    --ff-principal: 'Press Start 2P', cursive;
+    --ff-secondary: 'Roboto', sans-serif;
+
+    --fs-input: 2rem;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: var(--ff-secondary);
 }
 
 html,
 body {
     width: 100%;
     height: 100%;
+}
+
+#run {
+    display: none;
+}
+
+#pokemon {
+    background: none;
+    border: none;
+    outline: none;
+
+    color: var(--clr-text);
+    text-transform: uppercase;
+    font-size: var(--fs-input);
+    font-family: var(--ff-principal);
+    text-align: center;
+}
+
+p::first-letter,
+h1::first-letter {
+    text-transform: uppercase;
+}
+
+h3 {
+    margin: 0.3rem;
 }
 
 main {
@@ -18,4 +63,107 @@ main {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: 1fr;
     place-items: center;
+
+    gap: 4rem;
+}
+
+.left {
+    display: grid;
+    width: 100%;
+    height: 100%;
+
+    place-items: center;
+
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.2fr 1fr 1fr;
+
+    background: var(--clr-bg-left);
+}
+
+.top_left {
+    display: grid;
+    width: 100%;
+    height: 100%;
+
+    place-items: center;
+}
+
+.bottom_left {
+    --columns-l: 1;
+    --rows-l: 1;
+
+    display: grid;
+    width: 100%;
+    height: 100%;
+
+    place-items: center;
+
+    grid-template-columns: repeat(var(--columns-l), 1fr);
+    grid-template-rows: repeat(var(--rows-l), 1fr);
+}
+
+.bottom_left div {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    place-items: center;
+}
+
+.right {
+    display: grid;
+    width: 100%;
+    height: 100%;
+
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(2, 1fr);
+
+    gap: 2rem;
+}
+
+.top_right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--clr-bg-top-right);
+}
+
+.bottom_right {
+    --columns: 1;
+    --rows: 1;
+
+    display: grid;
+    width: 100%;
+    padding-top: 2rem;
+
+    grid-template-columns: repeat(var(--columns), 1fr);
+    grid-template-rows: repeat(var(--rows), 1fr);
+    place-items: center;
+
+    background: var(--clr-bg-bottom-right);
+}
+
+.bottom_right div {
+    width: 100%;
+    text-align: center;
+}
+
+.bottom_right div h1,
+.bottom_right div h3 {
+    font-size: 0.8rem;
+}
+
+.error_container {
+    display: flex;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100px;
+
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+
+    background: red;
+    color: white;
 }
