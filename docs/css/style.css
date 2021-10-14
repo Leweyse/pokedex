@@ -6,8 +6,8 @@
     --clr-bg-top-right: #3A3042;
     --clr-bg-bottom-right: #DB9D47;
 
-    /* #FFE19C
-    #EDFFD9 */
+    --clr-accent-1:#FFE19C;
+    --clr-test-2: #EDFFD9;
 
     --clr-text: #f7fcf1;
 
@@ -47,6 +47,7 @@ body {
     text-align: center;
 }
 
+button::first-letter,
 p::first-letter,
 h1::first-letter {
     text-transform: uppercase;
@@ -86,7 +87,19 @@ main {
     width: 100%;
     height: 100%;
 
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
     place-items: center;
+}
+
+.top_left img {
+    grid-column: 1 / 2;
+    width: 40%;
+}
+
+.top_left article {
+    grid-column: 2 / 3;
+    text-align: center;
 }
 
 .bottom_left {
@@ -108,6 +121,18 @@ main {
     width: 100%;
     height: 100%;
     place-items: center;
+}
+
+.bottom_left div button {
+    width: 50%;
+    height: 30%;
+
+    font-size: calc(var(--fs-input)*0.5);
+    background: var(--clr-accent-1);
+    border: none;
+    border-radius: 5px;
+
+    outline: none;
 }
 
 .right {

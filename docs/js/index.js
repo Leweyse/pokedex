@@ -70,6 +70,7 @@ const listIndex = (obj) => {
 const createContentLeft = (obj) => {
     let divTag = document.createElement('div');
     let secondDivTag = document.createElement('div');
+    let articleTag = document.createElement('article');
     let h1Tag = document.createElement('h1');
     let h3Tag = document.createElement('h3');
     let imgTag = document.createElement('img');
@@ -77,11 +78,12 @@ const createContentLeft = (obj) => {
     divTag.classList.add('top_left');
     secondDivTag.classList.add('bottom_left');
 
+    articleTag.appendChild(h1Tag);
+    articleTag.appendChild(h3Tag);
+    divTag.appendChild(imgTag);
+    divTag.appendChild(articleTag)
     leftSection.appendChild(divTag);
     leftSection.appendChild(secondDivTag);
-    divTag.appendChild(h1Tag);
-    divTag.appendChild(h3Tag);
-    divTag.appendChild(imgTag);
 
     h1Tag.innerHTML = obj.name;
     h3Tag.innerHTML = obj.id;
@@ -91,11 +93,11 @@ const createContentLeft = (obj) => {
 
     for (let j = 0; j < moveIndex.length; j++) {
         let divTag = document.createElement('div');
-        let pTag = document.createElement('p');
+        let buttonTag = document.createElement('button');
     
-        divTag.appendChild(pTag);
+        divTag.appendChild(buttonTag);
         secondDivTag.appendChild(divTag);
-        pTag.innerHTML = obj.moves[moveIndex[j]].move.name;
+        buttonTag.innerHTML = obj.moves[moveIndex[j]].move.name;
     }
 
     let columns = secondDivTag.childNodes.length;
