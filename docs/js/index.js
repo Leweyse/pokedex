@@ -2,6 +2,7 @@ const btn = document.getElementById('run');
 const input = document.getElementById('pokemon');
 const main = document.querySelector('main');
 const leftSection = document.querySelector('.left');
+const rightSection = document.querySelector('.right');
 const rightBottomSection = document.querySelector('.bottom_right');
 
 const getData = async (url) => {
@@ -79,8 +80,8 @@ const createContentLeft = (obj) => {
     secondDivTag.classList.add('bottom_left');
 
     articleTag.appendChild(h1Tag);
+    articleTag.appendChild(imgTag);
     articleTag.appendChild(h3Tag);
-    divTag.appendChild(imgTag);
     divTag.appendChild(articleTag)
     leftSection.appendChild(divTag);
     leftSection.appendChild(secondDivTag);
@@ -150,17 +151,28 @@ const createEvolutionSection = (arr) => {
         let imgTag = document.createElement('img');
 
         let columns = arr.length;
+        let rows = 1;
 
-        if (arr.length > 3) {
+        if (arr.length > 3 && arr.length <= 8) {
             columns = Math.ceil(arr.length / 2);
+            rows = 2;
+        } else if (arr.length > 8) {
+            if (window.matchMedia("(max-width: 940px)").matches) {
+                columns = 4;
+                rows = 3   
+            } else {
+                columns = Math.ceil(arr.length / 2);
+                rows = 2;
+            }
         }
 
         rightBottomSection.style.setProperty('--columns', columns);
+        rightBottomSection.style.setProperty('--rows', rows);
 
         rightBottomSection.appendChild(divTag);
         divTag.appendChild(h1Tag);
-        divTag.appendChild(h3Tag);
         divTag.appendChild(imgTag);
+        divTag.appendChild(h3Tag);
 
         h1Tag.innerHTML = obj.name;
         h3Tag.innerHTML = obj.id;
@@ -181,9 +193,18 @@ const createError = () => {
     divTag.appendChild(h3Tag);
     divTag.appendChild(h4Tag);
 
-    h1Tag.innerHTML = 'This pokemon is still a mystery';
-    h4Tag.innerHTML = 'Try to find another pokemon';
+    h1Tag.innerHTML = 'This pokemon is still a mystery.';
+    h4Tag.innerHTML = 'Try to find another pokemon!';
 }
+
+const resize = () => {
+    if (window.matchMedia("(max-width: 940px)").matches) rightSection.insertBefore(leftSection, rightBottomSection);
+    else main.insertBefore(leftSection, rightSection);
+}
+
+resize();
+
+window.addEventListener('resize', () => resize());
 
 input.addEventListener('keydown', function (event) {
     if (event.keyCode == 13) btn.click();
