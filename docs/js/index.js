@@ -1,9 +1,15 @@
+// TODO: Display animation while it's waiting for the data
+// TODO: Add transition and interaction with varieties section
+
 const btn = document.getElementById('run');
 const input = document.getElementById('pokemon');
 const main = document.querySelector('main');
 const leftSection = document.querySelector('.left');
 const rightSection = document.querySelector('.right');
 const rightBottomSection = document.querySelector('.bottom_right');
+
+const evolutionSection = document.querySelector('.bottom_right .evolutions');
+const varietieSection = document.querySelector('.bottom_right .varieties')
 
 const getData = async (url) => {
     try {
@@ -20,12 +26,12 @@ const getData = async (url) => {
     }
 }
 
-const getSpeciesData = async (nameArr) => {
-    let names = [];
-    nameArr.forEach(name => names.push(fetch(`https://pokeapi.co/api/v2/pokemon-species/${name}/`).then((response) => response.json())));
+const getMultiData = async (arr, endpoint) => {
+    let ids = [];
+    arr.forEach(id => ids.push(fetch(`https://pokeapi.co/api/v2/${endpoint}/${id}/`).then((response) => response.json())));
 
     try {
-        let data = await Promise.all(names);
+        let data = await Promise.all(ids);
         return data;
         
     } catch (error) {
@@ -33,37 +39,18 @@ const getSpeciesData = async (nameArr) => {
     }
 }
 
-const getEvolutionData = async (idArr) => {
-    let evolutions = [];
-    idArr.forEach(id => evolutions.push(fetch(`https://pokeapi.co/api/v2/pokemon/${id}/`).then((response) => response.json())));
-
-    try {
-        let data = await Promise.all(evolutions);
-        return data;
-
-    } catch (err) {
-        console.log('Missed pokemon');
-    }
-}
-
 const listIndex = (obj) => {
-    let indexArr = [];
-    let uniq = [];
     let result = [];
-
     let maxLength = 4;
 
-    for (let i = 0; i < obj.moves.length; i++) {
-        indexArr.push(Math.floor(Math.random() * obj.moves.length));
+    while (result.length < maxLength) {
+        let num = Math.floor(Math.random() * obj.moves.length);
 
         if (maxLength > obj.moves.length) maxLength = obj.moves.length;
         else maxLength = 4;
 
-        if (uniq.length < maxLength) uniq = [...new Set(indexArr)];
-        else i = obj.moves.length;
-
-        result = [...uniq]
-    }
+        if (result.indexOf(num) === -1) result.push(num);
+    } 
 
     return result;
 }
@@ -143,7 +130,27 @@ const getSpecieId = (nameArr) => {
     return ids;
 }
 
-const createEvolutionSection = (arr) => {
+const checkVarieties = (arr) => {
+    let result = [];
+    let varietieUrl = [];
+
+    arr.forEach(obj => {
+        if (obj.varieties.length > 1) {
+            obj.varieties.forEach(varietie => {
+                varietieUrl.push(varietie.pokemon.url);
+            })
+        }
+    })
+
+    varietieUrl.forEach(url => {
+        let id = url.split('/').splice(6, 1)[0];
+        result.push(id);
+    })
+
+    return result;
+}
+
+const createEvolutionSection = (arr, parent) => {
     arr.forEach(obj => {
         let divTag = document.createElement('div');
         let h1Tag = document.createElement('h1');
@@ -166,10 +173,10 @@ const createEvolutionSection = (arr) => {
             }
         }
 
-        rightBottomSection.style.setProperty('--columns', columns);
-        rightBottomSection.style.setProperty('--rows', rows);
+        parent.style.setProperty('--columns', columns);
+        parent.style.setProperty('--rows', rows);
 
-        rightBottomSection.appendChild(divTag);
+        parent.appendChild(divTag);
         divTag.appendChild(h1Tag);
         divTag.appendChild(imgTag);
         divTag.appendChild(h3Tag);
@@ -207,7 +214,7 @@ resize();
 window.addEventListener('resize', () => resize());
 
 input.addEventListener('keydown', function (event) {
-    if (event.keyCode == 13) btn.click();
+    if (event.code == 'Enter') btn.click();
 })
 
 btn.addEventListener('click', async () => {
@@ -220,6 +227,10 @@ btn.addEventListener('click', async () => {
     
     let id = inputChecked.join('-');
 
+    removeContent(leftSection);
+    removeContent(evolutionSection);
+    removeContent(varietieSection);
+
     let pokemon = `https://pokeapi.co/api/v2/pokemon/${id}/`;
     let pokemonData = await getData(pokemon);
 
@@ -229,11 +240,12 @@ btn.addEventListener('click', async () => {
 
     let evolutionUrl = await getData(specieData.evolution_chain.url);
 
-    let speciesData = await getSpeciesData(getEvolutionName(evolutionUrl))
-    let evolutionsData = await getEvolutionData(getSpecieId(speciesData));
+    let speciesData = await getMultiData(getEvolutionName(evolutionUrl), "pokemon-species");
+    let evolutionsData = await getMultiData(getSpecieId(speciesData), "pokemon");
 
-    removeContent(leftSection);
-    removeContent(rightBottomSection);
+    let varietiesData = await getMultiData(checkVarieties(speciesData), "pokemon");
+
     createContentLeft(pokemonData);
-    createEvolutionSection(evolutionsData);
+    createEvolutionSection(evolutionsData, evolutionSection);
+    createEvolutionSection(varietiesData, varietieSection);
 })
