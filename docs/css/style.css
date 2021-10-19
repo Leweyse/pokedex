@@ -332,7 +332,7 @@ main {
     }
 
     .right {
-        grid-template-rows: 0.5fr 1fr 0.5fr;
+        grid-template-rows: 0.5fr 1fr 0.6fr;
     }
 
     .bottom_right {
