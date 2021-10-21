@@ -1,2 +1,3 @@
 docs/* linguist-documentation=false
-docs/* linguist-vendored
+docs/css/* linguist-documentation=false
+docs/js/* linguist-documentation=false
