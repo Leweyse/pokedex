@@ -271,9 +271,12 @@ main {
     background: var(--clr-bg-bottom-right);
 }
 
+.bottom_right .evolutions {
+    z-index: -1;
+}
+
 .bottom_right .varieties {
     position: absolute;
-    z-index: -1;
 }
 
 .bottom_right section::after {
