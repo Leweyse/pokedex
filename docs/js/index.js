@@ -11,6 +11,10 @@ const rightBottomSection = document.querySelector('.bottom_right');
 const evolutionSection = document.querySelector('.bottom_right .evolutions');
 const varietieSection = document.querySelector('.bottom_right .varieties')
 
+evolutionSection.addEventListener('wheel', (e) => e.preventDefault());
+evolutionSection.addEventListener('click', () => varietieSection.style.zIndex = 1);
+varietieSection.addEventListener('click', () => varietieSection.style.zIndex = -1);
+
 const getData = async (url) => {
     try {
         let res = await fetch(url);
@@ -150,7 +154,7 @@ const checkVarieties = (arr) => {
     return result;
 }
 
-const createEvolutionSection = (arr, parent) => {
+const createRightBottomSection = (arr, parent) => {
     arr.forEach(obj => {
         let divTag = document.createElement('div');
         let h1Tag = document.createElement('h1');
@@ -164,13 +168,8 @@ const createEvolutionSection = (arr, parent) => {
             columns = Math.ceil(arr.length / 2);
             rows = 2;
         } else if (arr.length > 8) {
-            if (window.matchMedia("(max-width: 940px)").matches) {
-                columns = 4;
-                rows = 3   
-            } else {
-                columns = Math.ceil(arr.length / 2);
-                rows = 2;
-            }
+            columns = 4;
+            rows = 2;
         }
 
         parent.style.setProperty('--columns', columns);
@@ -246,6 +245,6 @@ btn.addEventListener('click', async () => {
     let varietiesData = await getMultiData(checkVarieties(speciesData), "pokemon");
 
     createContentLeft(pokemonData);
-    createEvolutionSection(evolutionsData, evolutionSection);
-    createEvolutionSection(varietiesData, varietieSection);
+    createRightBottomSection(evolutionsData, evolutionSection);
+    createRightBottomSection(varietiesData, varietieSection);
 })

@@ -88,7 +88,7 @@ main {
     width: 48px;
     height: 48px;
 
-    background: #0EAD69;
+    background: var(--clr-bg-bottom-right);
     border: 1px solid rgba(0, 0, 0, 10%);
     border-radius: 50%;
 
@@ -229,6 +229,28 @@ main {
 
 .bottom_right {
     position: relative;
+
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.bottom_right::-webkit-scrollbar {
+    width: 11px;
+}
+
+.bottom_right {
+    scrollbar-width: thin;
+    scrollbar-color: var(--clr-bg-bottom-right) var(--clr-bg-bottom-right);
+}
+
+.bottom_right::-webkit-scrollbar-track {
+    background: var(--clr-bg-bottom-right);
+}
+
+.bottom_right::-webkit-scrollbar-thumb {
+    background-color: var(--clr-bg-bottom-right) ;
+    border-radius: 6px;
+    border: 3px solid var(--clr-bg-bottom-right);
 }
 
 .bottom_right section {
@@ -238,7 +260,7 @@ main {
     position: absolute;
     display: grid;
     width: 100%;
-    height: 100%;
+    min-height: 100%;
     padding: 1rem;
 
     grid-template-columns: repeat(var(--columns), 1fr);
